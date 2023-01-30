@@ -1,2 +1,4 @@
 bert_models
+**__pycache__**
+**ipynb_checkpoints**
 pytorch_pretrained*
