@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-#SBATCH --output=/local_storage/users/marting/transformer-drg-style-transfer/delete_and_generate/%J_slurm.out
-#SBATCH --error=/local_storage/users/marting/transformer-drg-style-transfer/delete_and_generate/%J_slurm.err
+#SBATCH --output=jobs/delete_and_generate/%J_slurm.out
+#SBATCH --error=jobs/delete_and_generate/%J_slurm.err
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=martinig@kth.se
 #SBATCH --constrain="khazadum"
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=2GB
+#SBATCH -t 0-2:00  # time limit: (D-HH:MM) 
+
 
 # Check job environment
 echo "JOB:  ${SLURM_JOB_ID}"
@@ -27,11 +29,11 @@ DG_MODEL_OUT=/local_storage/users/marting/transformer-drg-style-transfer/delete_
 mkdir -p $DG_MODEL_OUT
 
 python openai_gpt_delete_and_generate.py \
---model_name openai-gpt-delete-generate \
+--model_name ~/.pytorch_pretrained_bert \
 --do_train \
 --do_eval \
 --train_dataset $DG_TRAIN_DATA \
---eval_dataset $DG_EVAL_DATA \
+--eval_dataset $DG_DEV_DATA \
 --train_batch_size 32 \
 --eval_batch_size 32 \
 --max_seq_length 85 \
