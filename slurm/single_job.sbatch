@@ -7,7 +7,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=2GB
-#SBATCH -t 0-2:00  # time limit: (D-HH:MM) 
+#SBATCH -t 0-4:00  # time limit: (D-HH:MM) 
 
 
 # Check job environment
@@ -37,4 +37,5 @@ python openai_gpt_delete_and_generate.py \
 --train_batch_size 32 \
 --eval_batch_size 32 \
 --max_seq_length 85 \
+--num_train_epochs 4 \
 --output_dir $DG_MODEL_OUT 
