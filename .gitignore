@@ -3,3 +3,4 @@ bert_models
 **ipynb_checkpoints**
 pytorch_pretrained*
 accessToken.txt
+models/

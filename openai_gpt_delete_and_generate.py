@@ -32,6 +32,9 @@ from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
 
 from pytorch_pretrained_bert import OpenAIGPTLMHeadModel, OpenAIGPTTokenizer, OpenAIAdam, cached_path
 
+WEIGHTS_NAME="pytorch_model.bin" 
+CONFIG_NAME="config.json"
+
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
                     level = logging.INFO)
@@ -219,17 +222,13 @@ def main():
                 nb_tr_steps += 1
                 tqdm_bar.desc = "Training loss: {:.2e} lr: {:.2e}".format(exp_average_loss, optimizer.get_lr()[0])
 
+            # Save a trained model, configuration and tokenizer
             model_to_save = model.module if hasattr(model, 'module') else model  # Only save the model it-self
-            output_model_file = os.path.join(args.output_dir, "pytorch_model_zero_grad_{}.bin".format(epoch+1))
-            config = model.module.config if hasattr(model, 'module') else model.config
-            torch.save(model_to_save.state_dict(), output_model_file)
+            # If we save using the predefined names, we can load using `from_pretrained`
+            torch.save(model_to_save.state_dict(), os.path.join(args.output_dir, WEIGHTS_NAME))
 
-            model_state_dict = torch.load(output_model_file)
-            model = OpenAIGPTLMHeadModel(config)
-            model.load_state_dict(model_state_dict)
-            model.to(device)
-            if n_gpu > 1:
-                model = torch.nn.DataParallel(model)
+        model_to_save.config.to_json_file(os.path.join(args.output_dir, CONFIG_NAME))
+        tokenizer.save_vocabulary(args.output_dir)
 
     if args.do_eval:
         model.eval()
