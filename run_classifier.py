@@ -340,10 +340,12 @@ def main():
 
     processors = {
         "yelp": YelpProcessor,
+        "jigsaw": YelpProcessor,
     }
 
     num_labels_task = {
         "yelp": 2,
+        "jigsaw": 2,
     }
 
     if args.local_rank == -1 or args.no_cuda:

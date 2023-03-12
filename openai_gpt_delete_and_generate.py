@@ -46,12 +46,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_name', type=str, default='openai-gpt',
                         help='pretrained model name')
-    parser.add_argument("--do_train", action='store_true', help="Whether to run training.")
+    parser.add_argument("--do_train", action='store_true', default=True, help="Whether to run training.")
     parser.add_argument("--do_eval", action='store_true', help="Whether to run eval on the dev set.")
-    parser.add_argument("--output_dir", default=None, type=str, required=True,
+    parser.add_argument("--output_dir", type=str, required=False, default=".",
                         help="The output directory where the model predictions and checkpoints will be written.")
-    parser.add_argument('--train_dataset', type=str, default='')
-    parser.add_argument('--eval_dataset', type=str, default='')
+    parser.add_argument('--train_dataset', type=str, default='/Midgard/home/martinig/transformer-drg-style-transfer/data/yelp/processed_files_with_bert_with_best_head/sentiment.train')
+    parser.add_argument('--eval_dataset', type=str, default='/Midgard/home/martinig/transformer-drg-style-transfer/data/yelp/processed_files_with_bert_with_best_head/sentiment.dev')
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--num_train_epochs', type=int, default=1)
     parser.add_argument('--train_batch_size', type=int, default=8)
